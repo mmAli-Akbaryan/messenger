@@ -64,7 +64,7 @@ void Chats::onGpListChanged(const QJsonObject &json)
 
     //ui->listWidget_chnl->clear();
     for(int i = 0; i < num; i++){
-        ui->listWidget_chnl->addItem(json["block " + i].toObject()["chanel_name"].toString());      //check chanel_name
+        ui->listWidget_chnl->addItem(json["block " + i].toObject()["channel_name"].toString());
     }
     GPList = json;
 }
@@ -156,7 +156,7 @@ void Chats::on_listWidget_GP_itemSelectionChanged()
 
 void Chats::on_listWidget_chnl_itemSelectionChanged()
 {
-    emit currentCH(QJsonObject(CHList["block " + ui->listWidget_chnl->currentRow()].toObject())["channel_name"].toString());        //check channel_name
+    emit currentCH(QJsonObject(CHList["block " + ui->listWidget_chnl->currentRow()].toObject())["channel_name"].toString());
 }
 
 
