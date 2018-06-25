@@ -55,6 +55,8 @@ void Chats::onPvListChanged(const QJsonObject &json)
     PVList = json;
 }
 
+                                                                                                    //checking for changes
+
 void Chats::onGpListChanged(const QJsonObject &json)
 {
     qDebug() <<"in gplistChanged slot";
