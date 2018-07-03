@@ -7,6 +7,7 @@
 #include <QNetworkRequest>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QDebug>
 
 class Updater : public QThread
 {
@@ -14,7 +15,7 @@ class Updater : public QThread
 
 public:
     void run();
-    Updater(const QString &token);
+    Updater(const QString &token, QNetworkAccessManager *manager);
     ~Updater();
     QJsonObject *useJson(QNetworkReply* reply);
 signals:

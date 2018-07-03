@@ -1,10 +1,10 @@
 #include "updater.h"
 
 
-Updater::Updater(const QString &token)
+Updater::Updater(const QString &token, QNetworkAccessManager *manager)
 {
     this->token = token;
-    manager = new QNetworkAccessManager();
+    this->manager = manager;
     loop = new QEventLoop();
     request = new QNetworkRequest();
     connect(manager, &QNetworkAccessManager::finished, loop, &QEventLoop::quit);
@@ -21,6 +21,7 @@ Updater::~Updater()
 
 void Updater::run()
 {
+    qDebug() <<"hello i'm in run!!!";
     QString url;
     for(; 1; this->sleep(5)){
 
@@ -30,7 +31,6 @@ void Updater::run()
         reply = manager->get(*request);
         loop->exec();
         emit pvListChanged(* useJson(reply));
-        qDebug() <<"hello i'm in run!!!";
 
         //list of groups
         url = ("http://api.softserver.org:1104/getgrouplist?token=" + token);

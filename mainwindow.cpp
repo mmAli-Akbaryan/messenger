@@ -172,7 +172,7 @@ void MainWindow::on_login_pushButton_clicked()
         if(job["code"] == "200"){
             //this->hide();
             token = job["token"].toString();
-            chats = new Chats(token, this);
+            chats = new Chats(token, manager,this);
             chats->show();
             //chats->exec();
 

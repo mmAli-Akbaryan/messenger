@@ -19,7 +19,7 @@ class Chats : public QDialog
     Q_OBJECT
 
 public:
-    explicit Chats(QString token, QWidget *parent = 0);
+    explicit Chats(QString token, QNetworkAccessManager *manager, QWidget *parent = 0);
     ~Chats();
     QString titleStyle(const QString &text);
 
@@ -54,6 +54,7 @@ private:
     Ui::Chats *ui;
     QString token;
     Updater *updater;
+    QNetworkAccessManager *manager;
    // Logout logout;
     QJsonObject PVList;     //used for finding username of clicked item
     QJsonObject GPList;     //used for finding username of clicked item

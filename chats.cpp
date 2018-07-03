@@ -2,14 +2,15 @@
 #include "ui_chats.h"
 #include <QMessageBox>
 
-Chats::Chats(QString token, QWidget *parent) :
+Chats::Chats(QString token, QNetworkAccessManager *manager, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Chats)
 {
     ui->setupUi(this);
     this->showMaximized();
     this->token = token;
-    updater = new Updater(token);
+    this->manager = manager;
+    updater = new Updater(token, manager);
     connect(updater, &Updater::pvListChanged, this, &Chats::onPvListChanged);
     connect(updater, &Updater::gpListChanged, this, &Chats::onGpListChanged);
     connect(updater, &Updater::chListChanged, this, &Chats::onChListChanged);
@@ -27,11 +28,6 @@ Chats::Chats(QString token, QWidget *parent) :
     ui->actionhello_3->setShortcut(QKeySequence("hello key"));
 
     updater->start();
-
-    QString jj("{\"message\": \"You Are in -2- Groups\", \"code\": \"200\", \"block 0\": {\"group_name\": \"test\"}, \"block 1\": {\"group_name\": \"test2\"}}");
-    QJsonDocument doc = QJsonDocument::fromJson(jj.toUtf8());
-    QJsonObject obj = doc.object();
-    onGpListChanged(obj);
 }
 
 Chats::~Chats()
@@ -62,22 +58,24 @@ void Chats::onGpListChanged(const QJsonObject &json)
     QString str = list[1];
     int num = str.toInt();
 
-    //ui->listWidget_chnl->clear();
+    ui->listWidget_GP->clear();
     for(int i = 0; i < num; i++){
-        ui->listWidget_chnl->addItem(json["block " + i].toObject()["channel_name"].toString());
+        ui->listWidget_GP->addItem(json["block " + QString::number(i)].toObject()["group_name"].toString());
+
     }
     GPList = json;
 }
 
 void Chats::onChListChanged(const QJsonObject &json)
 {
+    qDebug() <<"in chnl listChanged slot";
     QStringList list = (json["message"].toString().split('-'));
     QString str = list[1];
     int num = str.toInt();
 
-    ui->listWidget_GP->clear();
+    ui->listWidget_chnl->clear();
     for(int i = 0; i < num; i++){
-        ui->listWidget_GP->addItem(json["block " + i].toObject()["group_name"].toString());
+        ui->listWidget_chnl->addItem(json["block " + i].toObject()["channel_name"].toString());
     }
     CHList = json;
 }
